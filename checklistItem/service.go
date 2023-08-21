@@ -7,6 +7,8 @@ type Service interface {
 	CreateChecklistItem(input CreateChecklistInput, checklistIDInt int) (ChecklistItem, error)
 	GetChecklistsItemId(ID int) (ChecklistItem, error)
 	UpdateChecklistItem(ID int, itemName string) error
+	DeleteChecklistItem(ID int) error
+	UpdateStatusChecklistItem(ID int) error
 }
 
 type service struct {
@@ -55,6 +57,31 @@ func (s *service) UpdateChecklistItem(ID int, itemName string) error {
 	}
 
 	checklistItem.ItemName = itemName
+
+	err = s.repository.UpdateChecklistItem(checklistItem)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *service) DeleteChecklistItem(ID int) error {
+	err := s.repository.DeleteChecklistItem(ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *service) UpdateStatusChecklistItem(ID int) error {
+	checklistItem, err := s.repository.GetChecklistsItemId(ID)
+	if err != nil {
+		return err
+	}
+
+	checklistItem.Status = "done"
 
 	err = s.repository.UpdateChecklistItem(checklistItem)
 	if err != nil {

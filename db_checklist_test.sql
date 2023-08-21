@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 21, 2023 at 12:04 PM
+-- Generation Time: Aug 21, 2023 at 12:56 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -48,17 +48,17 @@ INSERT INTO `checklists` (`id`, `name`) VALUES
 CREATE TABLE `checklist_items` (
   `id` int(11) NOT NULL,
   `item_name` varchar(255) NOT NULL,
-  `checklist_id` int(11) NOT NULL
+  `checklist_id` int(11) NOT NULL,
+  `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `checklist_items`
 --
 
-INSERT INTO `checklist_items` (`id`, `item_name`, `checklist_id`) VALUES
-(1, 'item 2 v2', 2),
-(2, 'item 2 v3', 2),
-(3, 'test test to', 2);
+INSERT INTO `checklist_items` (`id`, `item_name`, `checklist_id`, `status`) VALUES
+(1, 'test test to edited ma boixx', 2, 'done'),
+(2, 'test test to edited ma boix', 2, 'done');
 
 -- --------------------------------------------------------
 

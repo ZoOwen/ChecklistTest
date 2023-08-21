@@ -11,6 +11,7 @@ type Repository interface {
 	Save(checklist ChecklistItem) (ChecklistItem, error)
 	GetChecklistsItemId(ID int) (ChecklistItem, error)
 	UpdateChecklistItem(checklistItem ChecklistItem) error
+	DeleteChecklistItem(ID int) error
 }
 
 type repository struct {
@@ -53,6 +54,22 @@ func (r *repository) GetChecklistsItemId(ID int) (ChecklistItem, error) {
 
 func (r *repository) UpdateChecklistItem(checklistItem ChecklistItem) error {
 	err := r.db.Save(&checklistItem).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *repository) DeleteChecklistItem(ID int) error {
+	checklist := ChecklistItem{}
+
+	err := r.db.First(&checklist, ID).Error
+	if err != nil {
+		return err
+	}
+
+	err = r.db.Delete(&checklist).Error
 	if err != nil {
 		return err
 	}

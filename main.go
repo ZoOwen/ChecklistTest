@@ -53,20 +53,18 @@ func main() {
 	api.POST("/register", userHandler.RegisterUser)
 	api.POST("/login", userHandler.Login)
 
-	//checklist
+	// Checklist routes
 	api.GET("/checklists", authMiddleware(authService, userService), checklistHandler.GetChecklists)
 	api.POST("/checklist", authMiddleware(authService, userService), checklistHandler.CreateChecklist)
-	api.DELETE("/checklist/:id", authMiddleware(authService, userService), checklistHandler.DeleteChecklist)
+	api.DELETE("/checklists/:id", authMiddleware(authService, userService), checklistHandler.DeleteChecklist)
 
-	//checklistItem
-	api.GET("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItem)
-	api.POST("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.CreateChecklistItem)
+	// Checklist Item routes
+	api.GET("/checklist/:checklistId/items", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItem)
+	api.POST("/checklist/:checklistId/items", authMiddleware(authService, userService), checklistItemHandler.CreateChecklistItem)
 	api.GET("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItemId)
-	api.PUT("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.UpdateChecklistItem)
-
-	// 	api.GET("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItem)
-	// api.POST("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.CreateChecklistItem)
-	// api.GET("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItemId)
+	api.PATCH("/checklist/:checklistId/item/rename/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.UpdateChecklistItem)
+	api.DELETE("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.DeleteChecklistItem)
+	api.PUT("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.UpdateStatusChecklistItem)
 
 	router.Run()
 }

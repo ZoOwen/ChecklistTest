@@ -115,3 +115,45 @@ func (h *checklistItemHandler) UpdateChecklistItem(c *gin.Context) {
 	response := helper.ApiResponse("Checklist item updated successfully", http.StatusOK, "success", nil)
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *checklistItemHandler) DeleteChecklistItem(c *gin.Context) {
+	checklistID := c.Param("checklistItemId")
+
+	ID, err := strconv.Atoi(checklistID)
+	if err != nil {
+		response := helper.ApiResponse("Invalid checklist ID!!", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	err = h.service.DeleteChecklistItem(ID)
+	if err != nil {
+		response := helper.ApiResponse("Error to delete checklist", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helper.ApiResponse("Checklist deleted successfully", http.StatusOK, "success", nil)
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *checklistItemHandler) UpdateStatusChecklistItem(c *gin.Context) {
+	checklistItemID := c.Param("checklistItemId")
+
+	ID, err := strconv.Atoi(checklistItemID)
+	if err != nil {
+		response := helper.ApiResponse("Invalid checklist item ID!", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	err = h.service.UpdateStatusChecklistItem(ID)
+	if err != nil {
+		response := helper.ApiResponse("Error to update checklist item", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helper.ApiResponse("Checklist item updated successfully", http.StatusOK, "success", nil)
+	c.JSON(http.StatusOK, response)
+}
