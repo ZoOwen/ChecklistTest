@@ -5,7 +5,8 @@ import "fmt"
 type Service interface {
 	GetChecklistItem(checklistID int) ([]ChecklistItem, error)
 	CreateChecklistItem(input CreateChecklistInput, checklistIDInt int) (ChecklistItem, error)
-	DeleteChecklist(ID int) error
+	GetChecklistsItemId(ID int) (ChecklistItem, error)
+	UpdateChecklistItem(ID int, itemName string) error
 }
 
 type service struct {
@@ -38,8 +39,24 @@ func (s *service) CreateChecklistItem(input CreateChecklistInput, checklistIDInt
 	return newchecklist, nil
 }
 
-func (s *service) DeleteChecklist(ID int) error {
-	err := s.repository.DeleteChecklist(ID)
+func (s *service) GetChecklistsItemId(ID int) (ChecklistItem, error) {
+	data, err := s.repository.GetChecklistsItemId(ID)
+	if err != nil {
+		return ChecklistItem{}, err
+	}
+
+	return data, nil
+}
+
+func (s *service) UpdateChecklistItem(ID int, itemName string) error {
+	checklistItem, err := s.repository.GetChecklistsItemId(ID)
+	if err != nil {
+		return err
+	}
+
+	checklistItem.ItemName = itemName
+
+	err = s.repository.UpdateChecklistItem(checklistItem)
 	if err != nil {
 		return err
 	}

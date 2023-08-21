@@ -64,23 +64,54 @@ func (h *checklistItemHandler) CreateChecklistItem(c *gin.Context) {
 
 }
 
-func (h *checklistItemHandler) DeleteChecklist(c *gin.Context) {
-	checklistID := c.Param("id")
+func (h *checklistItemHandler) GetChecklistsItemId(c *gin.Context) {
+	checklistID := c.Param("checklistItemId")
 
 	ID, err := strconv.Atoi(checklistID)
 	if err != nil {
-		response := helper.ApiResponse("Invalid checklist ID", http.StatusBadRequest, "error", nil)
+		response := helper.ApiResponse("Invalid checklist ID!", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	err = h.service.DeleteChecklist(ID)
+	data, err := h.service.GetChecklistsItemId(ID)
 	if err != nil {
 		response := helper.ApiResponse("Error to delete checklist", http.StatusInternalServerError, "error", nil)
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	response := helper.ApiResponse("Checklist deleted successfully", http.StatusOK, "success", nil)
+	response := helper.ApiResponse("Successs", http.StatusOK, "success", data)
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *checklistItemHandler) UpdateChecklistItem(c *gin.Context) {
+	checklistItemID := c.Param("checklistItemId")
+
+	ID, err := strconv.Atoi(checklistItemID)
+	if err != nil {
+		response := helper.ApiResponse("Invalid checklist item ID!", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	var updateData struct {
+		ItemName string `json:"item_name"`
+	}
+
+	if err := c.ShouldBindJSON(&updateData); err != nil {
+		response := helper.ApiResponse("Invalid JSON data", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	err = h.service.UpdateChecklistItem(ID, updateData.ItemName)
+	if err != nil {
+		response := helper.ApiResponse("Error to update checklist item", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	response := helper.ApiResponse("Checklist item updated successfully", http.StatusOK, "success", nil)
 	c.JSON(http.StatusOK, response)
 }

@@ -61,7 +61,12 @@ func main() {
 	//checklistItem
 	api.GET("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItem)
 	api.POST("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.CreateChecklistItem)
-	// api.DELETE("/checklist/:id", authMiddleware(authService, userService), checklistItemHandler.DeleteChecklist)
+	api.GET("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItemId)
+	api.PUT("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.UpdateChecklistItem)
+
+	// 	api.GET("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItem)
+	// api.POST("/checklist/:checklistId/item", authMiddleware(authService, userService), checklistItemHandler.CreateChecklistItem)
+	// api.GET("/checklist/:checklistId/item/:checklistItemId", authMiddleware(authService, userService), checklistItemHandler.GetChecklistsItemId)
 
 	router.Run()
 }
